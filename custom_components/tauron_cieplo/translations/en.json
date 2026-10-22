@@ -70,5 +70,19 @@
         "name": "Notice"
       }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Change monitoring",
+        "description": "Set how often to fetch Tauron notices (5–1440 minutes). Default: 60 minutes. Saving reloads the integration and fetches data. The active outage sensor still switches at the previously fetched start and end times.",
+        "data": {
+          "update_interval": "Check every (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_interval": "Enter a number of minutes between 5 and 1440."
+    }
   }
 }

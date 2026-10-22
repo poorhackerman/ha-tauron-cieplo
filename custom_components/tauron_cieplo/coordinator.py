@@ -6,7 +6,7 @@ from datetime import timedelta
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import API_ERRORS
-from .const import DOMAIN
+from .const import CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL, DOMAIN
 
 
 class TauronCoordinator(DataUpdateCoordinator):
@@ -16,7 +16,9 @@ class TauronCoordinator(DataUpdateCoordinator):
             logging.getLogger(__name__),
             name=DOMAIN,
             config_entry=entry,
-            update_interval=timedelta(minutes=5),
+            update_interval=timedelta(
+                minutes=entry.options.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL)
+            ),
         )
         self.api = api
         self.street_id = entry.data["street_id"]

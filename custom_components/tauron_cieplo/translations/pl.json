@@ -70,5 +70,19 @@
         "name": "Komunikat"
       }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Śledzenie zmian",
+        "description": "Ustaw częstotliwość pobierania komunikatów Taurona (5–1440 minut). Domyślnie: 60 minut. Po zapisaniu integracja pobierze dane i uruchomi nowy harmonogram. Czujnik aktywnej awarii nadal przełącza się o wcześniej pobranych godzinach początku i końca.",
+        "data": {
+          "update_interval": "Sprawdzaj co (minuty)"
+        }
+      }
+    },
+    "error": {
+      "invalid_interval": "Wpisz liczbę minut od 5 do 1440."
+    }
   }
 }

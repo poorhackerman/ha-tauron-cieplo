@@ -2,7 +2,7 @@
 
 ![TAURON Ciepło](assets/tauron-cieplo.png)
 
-Nieoficjalna integracja do monitorowania komunikatów o przerwach i awariach ciepła dla wybranego miasta i ulicy. Konfiguracja w interfejsie Home Assistanta, bez YAML, konta Taurona i kluczy API. Odpytywanie co 5 minut; minimalny Home Assistant: 2025.1.
+Nieoficjalna integracja do monitorowania komunikatów o przerwach i awariach ciepła dla wybranego miasta i ulicy. Konfiguracja w interfejsie Home Assistanta, bez YAML, konta Taurona i kluczy API. Częstotliwość sprawdzania ustawiana w opcjach (domyślnie co godzinę); minimalny Home Assistant: 2025.1.
 
 ## Instalacja od razu, bez GitHuba
 
@@ -12,6 +12,12 @@ Nieoficjalna integracja do monitorowania komunikatów o przerwach i awariach cie
 4. Wpisz minimum 3 znaki nazwy miasta, wybierz właściwe miasto, wpisz fragment nazwy ulicy (minimum 3 znaki) i wybierz ulicę z wyników Taurona. Jeśli brakuje ulicy, zaznacz „Wyszukaj ponownie” i wpisz dłuższy fragment. API Taurona zwraca maksymalnie 150 wyników na zapytanie.
 
 Kolejne ulice dodaje się jako osobne wpisy integracji. Aby zmienić adres, usuń dany wpis i dodaj nowy.
+
+## Częstotliwość śledzenia zmian
+
+Ustawienia → Urządzenia i usługi → TAURON Ciepło → Konfiguruj (lub Opcje) przy wybranym wpisie. W polu **Sprawdzaj co (minuty)** wpisz czas od 5 do 1440 minut, np. 15, 30, 60, 120 lub 1440. Każda ulica może mieć własny harmonogram.
+
+Domyślnie dane są pobierane co **60 minut**, także dla istniejących wpisów, które nie mają jeszcze zapisanych opcji. Zapisanie opcji automatycznie przeładowuje dany wpis i odczytuje dane; nie wymaga restartu całego HA ani ponownego wyboru adresu. Nowe komunikaty i zmiany terminów pojawią się najpóźniej przy kolejnym udanym odczycie. „Aktywna awaria” nadal przełącza się lokalnie o wcześniej pobranych godzinach początku i końca.
 
 ## Instalacja przez HACS
 

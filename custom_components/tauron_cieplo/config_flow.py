@@ -2,14 +2,33 @@
 
 import voluptuous as vol
 from homeassistant import config_entries
+from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import API_ERRORS, TauronApi
-from .const import CONF_CITY, CONF_STREET, CONF_STREET_ID, DOMAIN
+from .const import (
+    CONF_CITY,
+    CONF_STREET,
+    CONF_STREET_ID,
+    CONF_UPDATE_INTERVAL,
+    DEFAULT_UPDATE_INTERVAL,
+    DOMAIN,
+    MAX_UPDATE_INTERVAL,
+    MIN_UPDATE_INTERVAL,
+)
+
+INTERVAL_VALIDATOR = vol.All(
+    vol.Coerce(int), vol.Range(min=MIN_UPDATE_INTERVAL, max=MAX_UPDATE_INTERVAL)
+)
 
 
 class TauronConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry):
+        return TauronOptionsFlow()
 
     def __init__(self):
         self._cities = {}
@@ -115,6 +134,40 @@ class TauronConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 {
                     vol.Optional(CONF_STREET): vol.In(self._streets),
                     vol.Optional("search_again", default=False): bool,
+                }
+            ),
+            errors=errors,
+        )
+
+
+class TauronOptionsFlow(config_entries.OptionsFlow):
+    """Configure the API polling interval for one monitored street."""
+
+    async def async_step_init(self, user_input=None):
+        errors = {}
+        if user_input is not None:
+            try:
+                interval = INTERVAL_VALIDATOR(user_input.get(CONF_UPDATE_INTERVAL))
+            except vol.Invalid:
+                errors[CONF_UPDATE_INTERVAL] = "invalid_interval"
+            else:
+                return self.async_create_entry(
+                    title="",
+                    data={
+                        **self.config_entry.options,
+                        CONF_UPDATE_INTERVAL: interval,
+                    },
+                )
+        current = self.config_entry.options.get(
+            CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL
+        )
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        CONF_UPDATE_INTERVAL, default=current
+                    ): INTERVAL_VALIDATOR,
                 }
             ),
             errors=errors,
