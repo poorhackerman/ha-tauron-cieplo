@@ -1,0 +1,55 @@
+{
+  "title": "TAURON Ciepło",
+  "config": {
+    "step": {
+      "user": {
+        "title": "City",
+        "description": "Enter at least 3 characters of the city name.",
+        "data": {
+          "city": "City"
+        }
+      },
+      "city": {
+        "title": "Select city",
+        "description": "Select the correct city from Tauron’s address list.",
+        "data": {
+          "city": "City"
+        }
+      },
+      "street": {
+        "title": "Select street",
+        "description": "Select a street. No building number is required.",
+        "data": {
+          "street": "Street"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to retrieve valid Tauron data. Try again.",
+      "not_found": "Address not found.",
+      "too_short": "Enter at least 3 characters.",
+      "no_streets": "Tauron returned no streets for this city. Choose another city."
+    },
+    "abort": {
+      "already_configured": "This street is already configured."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "outage": {
+        "name": "Reported outage"
+      }
+    },
+    "sensor": {
+      "start": {
+        "name": "Outage start"
+      },
+      "end": {
+        "name": "Estimated outage end"
+      },
+      "message": {
+        "name": "Notice"
+      }
+    }
+  }
+}

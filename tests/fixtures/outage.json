@@ -1,0 +1,14 @@
+{
+  "Outages": {
+    "outageInfo": {
+      "info": [
+        {
+          "address": "Dąbrowa Górnicza, ul. 1 Maja",
+          "reply": "Przerwa w dostawie ciepła",
+          "details": "od 21.10.2026 godz. 01:00 do 22.10.2026 godz. 10:00"
+        }
+      ]
+    },
+    "Present": true
+  }
+}

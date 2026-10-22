@@ -1,0 +1,55 @@
+{
+  "title": "TAURON Ciepło",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Miejscowość",
+        "description": "Wpisz co najmniej 3 znaki nazwy miasta.",
+        "data": {
+          "city": "Miasto"
+        }
+      },
+      "city": {
+        "title": "Wybierz miejscowość",
+        "description": "Wybierz właściwą miejscowość z listy Taurona.",
+        "data": {
+          "city": "Miasto"
+        }
+      },
+      "street": {
+        "title": "Wybierz ulicę",
+        "description": "Wybierz ulicę z listy Taurona. Numer budynku nie jest wymagany.",
+        "data": {
+          "street": "Ulica"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie udało się pobrać prawidłowych danych Taurona. Spróbuj ponownie.",
+      "not_found": "Nie znaleziono adresu.",
+      "too_short": "Wpisz co najmniej 3 znaki.",
+      "no_streets": "Tauron nie zwrócił ulic dla tej miejscowości. Wybierz inne miasto."
+    },
+    "abort": {
+      "already_configured": "Ta ulica jest już skonfigurowana."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "outage": {
+        "name": "Zgłoszona awaria"
+      }
+    },
+    "sensor": {
+      "start": {
+        "name": "Początek przerwy"
+      },
+      "end": {
+        "name": "Przewidywany koniec przerwy"
+      },
+      "message": {
+        "name": "Komunikat"
+      }
+    }
+  }
+}

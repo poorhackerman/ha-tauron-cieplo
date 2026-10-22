@@ -1,0 +1,14 @@
+{
+  "domain": "tauron_cieplo",
+  "name": "TAURON Ciepło",
+  "codeowners": [
+    "@poorhackerman"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/poorhackerman/ha-tauron-cieplo",
+  "iot_class": "cloud_polling",
+  "integration_type": "service",
+  "requirements": [],
+  "version": "0.1.0",
+  "issue_tracker": "https://github.com/poorhackerman/ha-tauron-cieplo/issues"
+}

@@ -1,0 +1,9 @@
+{
+  "Outages": {
+    "info": {
+      "address": "Katowice, ul. 1 Maja",
+      "reply": "Nie mamy informacji o awarii w Twojej okolicy."
+    },
+    "Present": false
+  }
+}
