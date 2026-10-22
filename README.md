@@ -13,13 +13,15 @@ Kolejne ulice dodaje się jako osobne wpisy integracji. Aby zmienić adres, usu�
 
 ## Instalacja przez HACS
 
-Paczka zawiera strukturę repozytorium HACS i metadane dla `poorhackerman/ha-tauron-cieplo`. Nie została jeszcze opublikowana na GitHubie ani zgłoszona do katalogu HACS.
+Repozytorium: [poorhackerman/ha-tauron-cieplo](https://github.com/poorhackerman/ha-tauron-cieplo). Integracja jest przeznaczona do instalacji jako repozytorium niestandardowe HACS; nie została zgłoszona do jego domyślnego katalogu.
 
-1. Utwórz repozytorium GitHub `poorhackerman/ha-tauron-cieplo`.
-2. Metadane są już uzupełnione. Przy innej nazwie repozytorium uruchom `python configure_repository.py OWNER/REPO`.
-3. Wgraj zawartość tego katalogu do głównego katalogu repozytorium, z zachowaniem `custom_components`, `hacs.json` i README. Możesz utworzyć wydanie `v0.1.0`.
-4. HACS → menu ⋮ → Repozytoria niestandardowe → podaj adres repozytorium → typ **Integracja**.
-5. Wyszukaj **TAURON Ciepło**, pobierz, uruchom ponownie HA i dodaj integrację jak wyżej.
+1. HACS → menu ⋮ → Repozytoria niestandardowe.
+2. Wklej `https://github.com/poorhackerman/ha-tauron-cieplo` i wybierz typ **Integracja**.
+3. Wyszukaj **TAURON Ciepło**, pobierz i uruchom ponownie Home Assistant.
+4. Ustawienia → Urządzenia i usługi → Dodaj integrację → **TAURON Ciepło**.
+5. Wybierz miasto i ulicę.
+
+Przy publikowaniu własnej kopii projektu ustaw jej metadane poleceniem `python configure_repository.py OWNER/REPO`.
 
 Instalacja jako repozytorium niestandardowe nie oznacza obecności w domyślnym katalogu HACS. Pełna publikacja w katalogu wymaga także spełnienia aktualnych zasad HACS, m.in. materiałów marki.
 
