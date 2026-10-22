@@ -2,11 +2,10 @@
 
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.const import CONF_CITY
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import API_ERRORS, TauronApi
-from .const import CONF_STREET, CONF_STREET_ID, DOMAIN
+from .const import CONF_CITY, CONF_STREET, CONF_STREET_ID, DOMAIN
 
 
 class TauronConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
