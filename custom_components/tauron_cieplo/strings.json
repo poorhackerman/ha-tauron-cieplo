@@ -18,9 +18,17 @@
       },
       "street": {
         "title": "Select street",
-        "description": "Select a street. No building number is required.",
+        "description": "Select a street. To change the query, check Search again and continue.",
         "data": {
-          "street": "Street"
+          "street": "Street",
+          "search_again": "Search again"
+        }
+      },
+      "street_search": {
+        "title": "Search street",
+        "description": "Enter at least 3 characters of the street name without a building number. Tauron limits results to 150 entries; use a more specific query if needed.",
+        "data": {
+          "street": "Street name fragment"
         }
       }
     },
@@ -38,6 +46,9 @@
     "binary_sensor": {
       "outage": {
         "name": "Reported outage"
+      },
+      "active_outage": {
+        "name": "Active outage"
       }
     },
     "sensor": {

@@ -63,9 +63,10 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             "https://cieplo.tauron.pl/iapi/city/getcities",
             params={"partName": "Katowice"},
         )
-        await client.streets("9")
+        await client.streets("9", "Zio")
         session.get.assert_called_with(
-            "https://cieplo.tauron.pl/iapi/street/GetStreets", params={"ownerGaid": "9"}
+            "https://cieplo.tauron.pl/iapi/street/GetStreets",
+            params={"ownerGaid": "9", "partName": "Zio"},
         )
 
     async def test_bad_json_and_schema(self):

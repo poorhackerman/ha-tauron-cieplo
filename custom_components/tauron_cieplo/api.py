@@ -38,8 +38,10 @@ class TauronApi:
     async def cities(self, query):
         return await self.locations("city/getcities", partName=query)
 
-    async def streets(self, city_id):
-        return await self.locations("street/GetStreets", ownerGaid=city_id)
+    async def streets(self, city_id, query):
+        return await self.locations(
+            "street/GetStreets", ownerGaid=city_id, partName=query
+        )
 
     async def outages(self, street_id):
         return parse_outages(

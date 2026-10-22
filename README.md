@@ -7,7 +7,7 @@ Nieoficjalna integracja do monitorowania komunikatów o przerwach i awariach cie
 1. Skopiuj folder `custom_components/tauron_cieplo` do `/config/custom_components/tauron_cieplo` w Home Assistant. Plik manifestu powinien być pod `/config/custom_components/tauron_cieplo/manifest.json`.
 2. Uruchom ponownie Home Assistant.
 3. Ustawienia → Urządzenia i usługi → Dodaj integrację → **TAURON Ciepło**.
-4. Wpisz minimum 3 znaki nazwy miasta, wybierz właściwe miasto i ulicę z list Taurona.
+4. Wpisz minimum 3 znaki nazwy miasta, wybierz właściwe miasto, wpisz fragment nazwy ulicy (minimum 3 znaki) i wybierz ulicę z wyników Taurona. Jeśli brakuje ulicy, zaznacz „Wyszukaj ponownie” i wpisz dłuższy fragment. API Taurona zwraca maksymalnie 150 wyników na zapytanie.
 
 Kolejne ulice dodaje się jako osobne wpisy integracji. Aby zmienić adres, usuń dany wpis i dodaj nowy.
 
@@ -30,6 +30,7 @@ Instalacja jako repozytorium niestandardowe nie oznacza obecności w domyślnym 
 | Encja | Znaczenie |
 | --- | --- |
 | Zgłoszona awaria | `on`, gdy API Taurona zwraca `Present: true`; `off`, gdy zwraca `false` |
+| Aktywna awaria | `on`, gdy teraz trwa dowolny podany przedział: początek ≤ teraz < koniec; `off`, gdy brak komunikatów lub wszystkie rozpoznane przedziały są poza aktualnym czasem; `unknown`, gdy dat nie da się odczytać i żaden znany przedział nie jest aktywny |
 | Początek przerwy | Data i godzina początku wybranego komunikatu |
 | Przewidywany koniec przerwy | Termin podany przez Tauron, nie potwierdzenie przywrócenia dostaw |
 | Komunikat | Treść skrócona do 255 znaków; pełne komunikaty w atrybucie `outages` |
@@ -39,6 +40,8 @@ Encje należą do jednego urządzenia dla ulicy. Nazwy identyfikatorów nadaje H
 W atrybucie `outages` dostępne są wszystkie komunikaty: `address`, `reply`, `details`, `start`, `end`. Przy wielu komunikatach czujniki wybierają najpierw trwający lub bez rozpoznanych dat, potem najbliższy przyszły, a ostatecznie ostatni zakończony.
 
 **„Zgłoszona awaria” odzwierciedla publikację Taurona**, także komunikat przyszły lub pozostawiony po terminie. Nie wyłącza się samoczynnie po przewidywanym końcu: upływ terminu nie potwierdza usunięcia awarii. Integracja nie mierzy fizycznej dostawy ciepła i nie filtruje numerów budynków. Komunikat dla ulicy może dotyczyć tylko części budynków — sprawdź pełną treść.
+
+**„Aktywna awaria” określa aktywność według opublikowanego przedziału**, a nie pomiar dostawy. Zmienia stan o godzinie rozpoczęcia i przewidywanego końca również między odczytami API, bez dodatkowych zapytań. Jeśli Tauron przedłuży termin, stan zostanie przeliczony po kolejnym odczycie. Nowa encja jest dodawana automatycznie po aktualizacji i restarcie HA; istniejącej konfiguracji nie trzeba usuwać. Poprawione wyszukiwanie ulic jest dostępne przy dodawaniu kolejnej konfiguracji.
 
 Błąd sieci, limit zapytań, nieprawidłowy JSON lub zmiana formatu API powodują `unavailable`, a nie `off`. Wszystkie encje danej ulicy korzystają z jednego odczytu. Żądania mają limit czasu 25 sekund.
 

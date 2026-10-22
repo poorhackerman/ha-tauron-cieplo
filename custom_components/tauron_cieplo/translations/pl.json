@@ -18,9 +18,17 @@
       },
       "street": {
         "title": "Wybierz ulicę",
-        "description": "Wybierz ulicę z listy Taurona. Numer budynku nie jest wymagany.",
+        "description": "Wybierz ulicę z wyników. Aby zmienić wyszukiwanie, zaznacz „Wyszukaj ponownie” i przejdź dalej.",
         "data": {
-          "street": "Ulica"
+          "street": "Ulica",
+          "search_again": "Wyszukaj ponownie"
+        }
+      },
+      "street_search": {
+        "title": "Wyszukaj ulicę",
+        "description": "Wpisz co najmniej 3 znaki nazwy ulicy, bez numeru budynku. Tauron ogranicza wyniki do 150 pozycji — w razie potrzeby wpisz dłuższy fragment nazwy.",
+        "data": {
+          "street": "Fragment nazwy ulicy"
         }
       }
     },
@@ -38,6 +46,9 @@
     "binary_sensor": {
       "outage": {
         "name": "Zgłoszona awaria"
+      },
+      "active_outage": {
+        "name": "Aktywna awaria"
       }
     },
     "sensor": {

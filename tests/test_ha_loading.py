@@ -3,6 +3,7 @@
 import importlib
 import importlib.util
 import unittest
+from unittest.mock import AsyncMock, MagicMock, patch
 
 HA_INSTALLED = importlib.util.find_spec("homeassistant") is not None
 
@@ -30,3 +31,77 @@ class HomeAssistantLoadingTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(result["type"], "form")
             self.assertEqual(result["step_id"], "user")
             self.assertEqual(result["errors"], {})
+
+    async def test_street_search_fetches_filtered_results(self):
+        from custom_components.tauron_cieplo.api import TauronApi
+        from custom_components.tauron_cieplo.config_flow import TauronConfigFlow
+
+        flow = TauronConfigFlow()
+        flow.hass = MagicMock()
+        flow.handler = "tauron_cieplo"
+        flow._city = {"Name": "Katowice", "Gaid": "9"}
+        with (
+            patch(
+                "custom_components.tauron_cieplo.config_flow.async_get_clientsession"
+            ),
+            patch.object(TauronApi, "streets", new_callable=AsyncMock) as streets,
+        ):
+            streets.return_value = [{"Name": "ul. Ziołowa", "Gaid": "259696"}]
+            result = await flow.async_step_street_search({"street": " Zio "})
+        streets.assert_awaited_once_with("9", "Zio")
+        self.assertEqual(result["step_id"], "street")
+        self.assertEqual(flow._streets, {"259696": "ul. Ziołowa"})
+        result = await flow.async_step_street({"search_again": True})
+        self.assertEqual(result["step_id"], "street_search")
+
+    async def test_street_search_no_results_and_short_query(self):
+        from custom_components.tauron_cieplo.api import TauronApi
+        from custom_components.tauron_cieplo.config_flow import TauronConfigFlow
+
+        flow = TauronConfigFlow()
+        flow.hass = MagicMock()
+        flow.handler = "tauron_cieplo"
+        flow._city = {"Name": "Katowice", "Gaid": "9"}
+        with (
+            patch(
+                "custom_components.tauron_cieplo.config_flow.async_get_clientsession"
+            ),
+            patch.object(TauronApi, "streets", new_callable=AsyncMock) as streets,
+        ):
+            result = await flow.async_step_street_search({"street": "ab"})
+            self.assertEqual(result["errors"], {"street": "too_short"})
+            streets.assert_not_awaited()
+            streets.return_value = []
+            result = await flow.async_step_street_search({"street": "missing"})
+            self.assertEqual(result["errors"], {"street": "not_found"})
+
+    async def test_active_sensor_and_boundary_timer(self):
+        from datetime import UTC, datetime, timedelta
+
+        from custom_components.tauron_cieplo.binary_sensor import TauronActiveOutage
+
+        now = datetime(2026, 10, 22, 12, tzinfo=UTC)
+        start, end = now + timedelta(minutes=1), now + timedelta(minutes=2)
+        coordinator = MagicMock()
+        coordinator.data = {"present": True, "outages": [{"start": start, "end": end}]}
+        entry = MagicMock()
+        entry.data = {"street_id": "1"}
+        sensor = TauronActiveOutage(coordinator, entry, "active_outage")
+        sensor.hass = MagicMock()
+        target = "custom_components.tauron_cieplo.binary_sensor"
+        with (
+            patch(f"{target}.dt_util.utcnow", return_value=now),
+            patch(f"{target}.async_track_point_in_utc_time") as track,
+        ):
+            self.assertFalse(sensor.is_on)
+            sensor._schedule_boundary()
+            self.assertEqual(track.call_args.args[2], start)
+            cancel = track.return_value
+            coordinator.data["outages"][0]["start"] = now - timedelta(minutes=1)
+            sensor._schedule_boundary()
+            cancel.assert_called_once()
+            self.assertTrue(sensor.is_on)
+            self.assertEqual(track.call_args.args[2], end)
+            sensor._cancel_timer()
+        with patch(f"{target}.dt_util.utcnow", return_value=end):
+            self.assertFalse(sensor.is_on)

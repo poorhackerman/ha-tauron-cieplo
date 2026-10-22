@@ -85,3 +85,14 @@ def select_outage(outages, now):
     if future:
         return min(future, key=lambda o: o["start"])
     return max(outages, key=lambda o: o["end"]) if outages else None
+
+
+def active_outage(outages, now):
+    """True inside any published interval, unknown for undated notices."""
+    unknown = False
+    for row in outages:
+        if row["start"] is None or row["end"] is None:
+            unknown = True
+        elif row["start"] <= now < row["end"]:
+            return True
+    return None if unknown else False

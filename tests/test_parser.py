@@ -94,6 +94,24 @@ class ParserTests(unittest.TestCase):
         self.assertIs(parser.select_outage([past], now), past)
         self.assertIsNone(parser.select_outage([], now))
 
+    def test_active_outage_boundaries(self):
+        row = parser.parse_outages(self.fixture("outage"))["outages"][0]
+        start, end = row["start"], row["end"]
+        from datetime import timedelta
+
+        self.assertFalse(parser.active_outage([row], start - timedelta(seconds=1)))
+        self.assertTrue(parser.active_outage([row], start))
+        self.assertTrue(parser.active_outage([row], end - timedelta(seconds=1)))
+        self.assertFalse(parser.active_outage([row], end))
+        self.assertFalse(parser.active_outage([], start))
+
+    def test_active_unknown_and_multiple(self):
+        row = parser.parse_outages(self.fixture("outage"))["outages"][0]
+        unknown = {"start": None, "end": None}
+        self.assertIsNone(parser.active_outage([unknown], row["start"]))
+        self.assertTrue(parser.active_outage([unknown, row], row["start"]))
+        self.assertIsNone(parser.active_outage([row, unknown], row["end"]))
+
 
 if __name__ == "__main__":
     unittest.main()
