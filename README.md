@@ -1,5 +1,7 @@
 # TAURON Ciepło — Home Assistant
 
+![TAURON Ciepło](assets/tauron-cieplo.png)
+
 Nieoficjalna integracja do monitorowania komunikatów o przerwach i awariach ciepła dla wybranego miasta i ulicy. Konfiguracja w interfejsie Home Assistanta, bez YAML, konta Taurona i kluczy API. Odpytywanie co 5 minut; minimalny Home Assistant: 2025.1.
 
 ## Instalacja od razu, bez GitHuba
