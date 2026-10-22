@@ -45,10 +45,18 @@
   "entity": {
     "binary_sensor": {
       "outage": {
-        "name": "Reported outage"
+        "name": "Reported outage",
+        "state": {
+          "on": "Yes",
+          "off": "No"
+        }
       },
       "active_outage": {
-        "name": "Active outage"
+        "name": "Active outage",
+        "state": {
+          "on": "Yes",
+          "off": "No"
+        }
       }
     },
     "sensor": {

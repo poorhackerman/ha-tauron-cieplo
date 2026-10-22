@@ -45,10 +45,18 @@
   "entity": {
     "binary_sensor": {
       "outage": {
-        "name": "Zgłoszona awaria"
+        "name": "Zgłoszona awaria",
+        "state": {
+          "on": "Tak",
+          "off": "Nie"
+        }
       },
       "active_outage": {
-        "name": "Aktywna awaria"
+        "name": "Aktywna awaria",
+        "state": {
+          "on": "Tak",
+          "off": "Nie"
+        }
       }
     },
     "sensor": {
