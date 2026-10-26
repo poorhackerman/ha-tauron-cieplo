@@ -46,8 +46,9 @@ class HomeAssistantLoadingTests(unittest.IsolatedAsyncioTestCase):
         import tempfile
         from datetime import timedelta
 
-        from custom_components.tauron_cieplo.coordinator import TauronCoordinator
         from homeassistant.core import HomeAssistant
+
+        from custom_components.tauron_cieplo.coordinator import TauronCoordinator
 
         with tempfile.TemporaryDirectory() as config_dir:
             hass = HomeAssistant(config_dir)
@@ -63,6 +64,37 @@ class HomeAssistantLoadingTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(
                     coordinator.update_interval, timedelta(minutes=expected)
                 )
+
+    async def test_coordinator_retries_quickly_and_restores_interval(self):
+        import tempfile
+        from datetime import timedelta
+
+        from homeassistant.core import HomeAssistant
+        from homeassistant.helpers.update_coordinator import UpdateFailed
+
+        from custom_components.tauron_cieplo.coordinator import TauronCoordinator
+
+        with tempfile.TemporaryDirectory() as config_dir:
+            hass = HomeAssistant(config_dir)
+            entry = MagicMock()
+            entry.data = {"street_id": "1"}
+            entry.options = {"update_interval": 120}
+            api = MagicMock()
+            api.outages = AsyncMock(
+                side_effect=[
+                    TimeoutError("DNS unavailable"),
+                    {"present": False, "outages": []},
+                ]
+            )
+            coordinator = TauronCoordinator(hass, entry, api)
+
+            with self.assertRaises(UpdateFailed):
+                await coordinator._async_update_data()
+            self.assertEqual(coordinator.update_interval, timedelta(minutes=5))
+
+            result = await coordinator._async_update_data()
+            self.assertEqual(result, {"present": False, "outages": []})
+            self.assertEqual(coordinator.update_interval, timedelta(minutes=120))
 
     async def test_options_update_reloads_existing_entry(self):
         from custom_components.tauron_cieplo import async_update_options
@@ -83,8 +115,9 @@ class HomeAssistantLoadingTests(unittest.IsolatedAsyncioTestCase):
     async def test_initial_configuration_form(self):
         import tempfile
 
-        from custom_components.tauron_cieplo.config_flow import TauronConfigFlow
         from homeassistant.core import HomeAssistant
+
+        from custom_components.tauron_cieplo.config_flow import TauronConfigFlow
 
         with tempfile.TemporaryDirectory() as config_dir:
             flow = TauronConfigFlow()

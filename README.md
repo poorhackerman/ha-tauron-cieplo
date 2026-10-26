@@ -44,7 +44,7 @@ W atrybucie `outages` dostępne są wszystkie komunikaty: `address`, `reply`, `d
 
 **„Aktywna awaria” określa aktywność według opublikowanego przedziału**, a nie pomiar dostawy. Zmienia stan o godzinie rozpoczęcia i przewidywanego końca również między odczytami API, bez dodatkowych zapytań. Jeśli Tauron przedłuży termin, stan zostanie przeliczony po kolejnym odczycie. Nowa encja jest dodawana automatycznie po aktualizacji i restarcie HA; istniejącej konfiguracji nie trzeba usuwać. Poprawione wyszukiwanie ulic jest dostępne przy dodawaniu kolejnej konfiguracji.
 
-Błąd sieci, limit zapytań, nieprawidłowy JSON lub zmiana formatu API powodują `unavailable`, a nie `off`. Wszystkie encje danej ulicy korzystają z jednego odczytu. Żądania mają limit czasu 25 sekund.
+Błąd sieci, limit zapytań, nieprawidłowy JSON lub zmiana formatu API powodują `unavailable`, a nie `off`. Po nieudanym odczycie integracja automatycznie ponawia próbę co 5 minut. Po odzyskaniu połączenia wraca do częstotliwości ustawionej przez użytkownika. Wszystkie encje danej ulicy korzystają z jednego odczytu. Żądania mają limit czasu 25 sekund.
 
 ## Ograniczenie źródła
 
