@@ -4,34 +4,27 @@
 
 Nieoficjalna integracja do monitorowania komunikatów o przerwach i awariach ciepła dla wybranego miasta i ulicy. Konfiguracja w interfejsie Home Assistanta, bez YAML, konta Taurona i kluczy API. Częstotliwość sprawdzania ustawiana w opcjach (domyślnie co godzinę); minimalny Home Assistant: 2025.1.
 
-## Instalacja od razu, bez GitHuba
+## Instalacja przez HACS
+
+1. Otwórz HACS i wyszukaj **TAURON Ciepło**.
+2. Pobierz integrację i uruchom ponownie Home Assistant.
+3. Przejdź do: Ustawienia → Urządzenia i usługi → Dodaj integrację → **TAURON Ciepło**.
+4. Wpisz minimum 3 znaki nazwy miasta, wybierz właściwe miasto, wpisz fragment nazwy ulicy (minimum 3 znaki) i wybierz ulicę z wyników Taurona. Jeśli brakuje ulicy, zaznacz „Wyszukaj ponownie” i wpisz dłuższy fragment. API Taurona zwraca maksymalnie 150 wyników na zapytanie.
+
+Kolejne ulice dodaje się jako osobne wpisy integracji. Aby zmienić adres, usuń dany wpis i dodaj nowy.
+
+## Instalacja ręczna
 
 1. Skopiuj folder `custom_components/tauron_cieplo` do `/config/custom_components/tauron_cieplo` w Home Assistant. Plik manifestu powinien być pod `/config/custom_components/tauron_cieplo/manifest.json`.
 2. Uruchom ponownie Home Assistant.
 3. Ustawienia → Urządzenia i usługi → Dodaj integrację → **TAURON Ciepło**.
 4. Wpisz minimum 3 znaki nazwy miasta, wybierz właściwe miasto, wpisz fragment nazwy ulicy (minimum 3 znaki) i wybierz ulicę z wyników Taurona. Jeśli brakuje ulicy, zaznacz „Wyszukaj ponownie” i wpisz dłuższy fragment. API Taurona zwraca maksymalnie 150 wyników na zapytanie.
 
-Kolejne ulice dodaje się jako osobne wpisy integracji. Aby zmienić adres, usuń dany wpis i dodaj nowy.
-
 ## Częstotliwość śledzenia zmian
 
 Ustawienia → Urządzenia i usługi → TAURON Ciepło → Konfiguruj (lub Opcje) przy wybranym wpisie. W polu **Sprawdzaj co (minuty)** wpisz czas od 5 do 1440 minut, np. 15, 30, 60, 120 lub 1440. Każda ulica może mieć własny harmonogram.
 
 Domyślnie dane są pobierane co **60 minut**, także dla istniejących wpisów, które nie mają jeszcze zapisanych opcji. Zapisanie opcji automatycznie przeładowuje dany wpis i odczytuje dane; nie wymaga restartu całego HA ani ponownego wyboru adresu. Nowe komunikaty i zmiany terminów pojawią się najpóźniej przy kolejnym udanym odczycie. „Aktywna awaria” nadal przełącza się lokalnie o wcześniej pobranych godzinach początku i końca.
-
-## Instalacja przez HACS
-
-Repozytorium: [poorhackerman/ha-tauron-cieplo](https://github.com/poorhackerman/ha-tauron-cieplo). Integracja jest przeznaczona do instalacji jako repozytorium niestandardowe HACS; nie została zgłoszona do jego domyślnego katalogu.
-
-1. HACS → menu ⋮ → Repozytoria niestandardowe.
-2. Wklej `https://github.com/poorhackerman/ha-tauron-cieplo` i wybierz typ **Integracja**.
-3. Wyszukaj **TAURON Ciepło**, pobierz i uruchom ponownie Home Assistant.
-4. Ustawienia → Urządzenia i usługi → Dodaj integrację → **TAURON Ciepło**.
-5. Wybierz miasto i ulicę.
-
-Przy publikowaniu własnej kopii projektu ustaw jej metadane poleceniem `python configure_repository.py OWNER/REPO`.
-
-Instalacja jako repozytorium niestandardowe nie oznacza obecności w domyślnym katalogu HACS. Pełna publikacja w katalogu wymaga także spełnienia aktualnych zasad HACS, m.in. materiałów marki.
 
 ## Encje i znaczenie danych
 
